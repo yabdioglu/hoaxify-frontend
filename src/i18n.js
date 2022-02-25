@@ -24,7 +24,7 @@ i18n.use(initReactI18next).init({
             }
         }
     },
-    fallbackLng: 'tr', //herhangi bir dil match etmediğinde
+    fallbackLng: 'en', //herhangi bir dil match etmediğinde
     ns: ['translations'], // kelimeleri hangi havuzdan alsın
     defaultNS : 'translations',
     keySeparator: false,
