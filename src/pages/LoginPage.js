@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Input from '../components/Input';
+import { withTranslation } from 'react-i18next';
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
     state = {
         username: null,
         password: null
@@ -14,14 +15,15 @@ export default class LoginPage extends Component {
         });
     }
     render() {
+        const { t } = this.props
         return (
             <div className='container'>
                 <form>
-                    <h1 className='text-center'>Login</h1>
-                    <Input label="Username" name="username" onChange={this.onChange} />
-                    <Input label="Password" name="password" type="password" onChange={this.onChange} />
+                    <h1 className='text-center'>{t('Login')}</h1>
+                    <Input label={t("Username")} name="username" onChange={this.onChange} />
+                    <Input label={t("Password")} name="password" type="password" onChange={this.onChange} />
                     <div className='text-center'>
-                        <button className='btn btn-primary'>Login</button>
+                        <button className='btn btn-primary'>{t('Login')}</button>
                     </div>
                 </form>
             </div>
@@ -29,50 +31,4 @@ export default class LoginPage extends Component {
     }
 }
 
-
-
-
-
-
-
-
-// import React from 'react'
-// import Input from '../components/Input';
-
-// class LoginPage extends React.Component{
-//     state = {
-//         username: null,
-//         password: null,
-//         pendingApiCall: false,
-//         errors: {}
-//     }
-//     render(){
-//         return (
-//             <div className='container'>
-//                     <form>
-//                     <h1 className="text-center">Login</h1>
-//                     <Input name="username" label="Username"
-//                     // error={username}
-//                     onChange={this.onChange} />
-//                     <Input name="password" label="Password"
-//                     // error={password}
-//                      onChange={this.onChange} type="password" />
-//                     <div className="text-center">
-//                         <button className="btn btn-primary"
-//                             onClick={this.onClickSignup}
-//                             // disabled={pendingApiCall}
-//                             >
-//                             {/* {pendingApiCall && <span className="spinner-border spinner-border-sm"></span>}Sign Up */}
-//                         </button>
-//                     </div>
-//                     <div>
-//                         <img src="https://flagcdn.com/24x18/tr.png" alt="Turkish Flag" onClick={() => this.onChangeLanguage('tr')} style={{cursor: 'pointer'}}/>
-//                         <img src="https://flagcdn.com/24x18/us.png" alt="USA Flag" onClick={() => this.onChangeLanguage('en')} style={{cursor: 'pointer'}}/>
-//                     </div>
-//                 </form>
-//             </div>
-//         );
-//     }
-// }
-
-// export default LoginPage;
+export default withTranslation()(LoginPage);

@@ -7,10 +7,14 @@ import UserSignupPage from './pages/UserSignupPage';
 import LoginPage from './pages/LoginPage';
 import reportWebVitals from './reportWebVitals';
 import './i18n';
+import LanguageSelector from './components/LanguageSelector'
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginPage />
+    <div>
+      <LoginPage />
+      <LanguageSelector />
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );
