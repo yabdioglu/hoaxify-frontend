@@ -2,12 +2,30 @@ import React, { Component } from 'react';
 import Input from '../components/Input';
 import { withTranslation } from 'react-i18next';
 import { login } from '../api/apiCalls';
+import axios from 'axios';
+import ButtonWithProgress from '../components/ButtonWithProgress';
 
 class LoginPage extends Component {
     state = {
         username: null,
         password: null,
-        error: null
+        error: null,
+        pendingApiCall: false
+    };
+
+    componentDidMount() {
+        axios.interceptors.request.use((request) => {
+            this.setState({ pendingApiCall: true })
+            return request;
+        });
+
+        axios.interceptors.response.use((response) => {
+            this.setState({ pendingApiCall: false });
+            return response;
+        }, (error) => {
+            this.setState({ pendingApiCall: false });
+            throw error;
+        });
     }
 
     onChange = event => {
@@ -16,7 +34,7 @@ class LoginPage extends Component {
             [name]: value,
             error: null
         });
-    }
+    };
 
     onClickLogin = async event => {
         event.preventDefault();
@@ -39,7 +57,7 @@ class LoginPage extends Component {
 
     render() {
         const { t } = this.props;
-        const { username, password, error} = this.state;
+        const { username, password, error, pendingApiCall } = this.state;
         const buttonEnabled = username && password;
         return (
             <div className="container">
@@ -49,7 +67,12 @@ class LoginPage extends Component {
                     <Input label={t("Password")} name="password" type="password" onChange={this.onChange} />
                     {error && <div className="alert alert-danger">{error}</div>}
                     <div className='text-center'>
-                        <button disabled={!buttonEnabled} className='btn btn-primary' onClick={this.onClickLogin}>{t('Login')}</button>
+                        <ButtonWithProgress
+                            onClick={this.onClickLogin}
+                            disabled={!buttonEnabled || pendingApiCall}
+                            pendingApiCall={pendingApiCall}
+                            text={t('Login')}
+                        />
                     </div>
                 </form>
             </div>
