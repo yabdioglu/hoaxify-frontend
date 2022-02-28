@@ -7,12 +7,15 @@ import UserSignupPage from './pages/UserSignupPage';
 import LoginPage from './pages/LoginPage';
 import reportWebVitals from './reportWebVitals';
 import './i18n';
-import LanguageSelector from './components/LanguageSelector'
+import LanguageSelector from './components/LanguageSelector';
+import ApiProgress from './shared/ApiProgress';
 
 ReactDOM.render(
   <React.StrictMode>
     <div>
-      <UserSignupPage />
+      <ApiProgress>
+        <UserSignupPage />
+      </ApiProgress>
       <LanguageSelector />
     </div>
   </React.StrictMode>,
