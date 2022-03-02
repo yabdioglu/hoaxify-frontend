@@ -15,7 +15,6 @@ export function withApiProgress(WrappedComponent, apiPath) {
 
         componentDidMount() {
             this.requestInterceptor = axios.interceptors.request.use((request) => {
-                console.log('running request interceptor', apiPath)
                 this.updateApiCallFor(request.url, true);
                 return request;
             });
