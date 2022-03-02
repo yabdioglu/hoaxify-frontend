@@ -1,18 +1,14 @@
 import React from "react";
-import ApiProgress from "../shared/ApiProgress";
 import LanguageSelector from '../components/LanguageSelector';
 import UserSignupPage from '../pages/UserSignupPage';
 import LoginPage from '../pages/LoginPage';
+import HomePage from "../pages/HomePage";
+import UserPage from "../pages/UserPage";
 
 function App() {
   return (
     <div className="row">
-      <div className="col">
-          <UserSignupPage />
-      </div>
-      <div className="col">
-          <LoginPage />
-      </div>
+      <UserPage/>
       <LanguageSelector />
     </div>
   );
