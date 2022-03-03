@@ -2,11 +2,16 @@ import React, { Component } from 'react'
 import logo from '../assets/hoaxify.png';
 import { Link } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
+import { Authentication } from '../shared/AuthenticationContext';
 
 class TopBar extends Component {
-    render() {
-        const { t, isLoggedIn, username, onLogoutSuccess } = this.props;
 
+    static contextType = Authentication;
+
+    render() {
+        const { t } = this.props;
+        const { state, onLogoutSuccess } = this.context;
+        const { isLoggedIn, username } = state;
         let links = (
             <ul className='navbar-nav ms-auto'>
                 <li>
@@ -29,7 +34,7 @@ class TopBar extends Component {
                             {username}
                         </Link>
                     </li>
-                    <li className='nav-link' onClick={onLogoutSuccess} style={{cursor: 'pointer'}}>
+                    <li className='nav-link' onClick={onLogoutSuccess} style={{ cursor: 'pointer' }}>
                         {t('Logout')}
                     </li>
                 </ul>
@@ -48,6 +53,8 @@ class TopBar extends Component {
                 </nav>
             </div>
         )
+
+
     }
 }
 
