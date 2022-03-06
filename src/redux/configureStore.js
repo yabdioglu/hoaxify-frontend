@@ -1,6 +1,7 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import authReducer from './authReducer';
 import SecureLS from 'secure-ls';
+import thunk from 'redux-thunk';
 
 const secureLs = new SecureLS();
 
@@ -26,7 +27,8 @@ const updateStateInStorage = newState => {
 }
 
 const configureStore = () => {
-    const store = createStore(authReducer, getStateFromStorage(), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const store = createStore(authReducer, getStateFromStorage(),composeEnhancers(applyMiddleware(thunk)));
     // İkinci parametre başlangıç state'imiz
 
     //Tüm store değişimlerinde subscribe methodu çağırılır.
