@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import LanguageSelector from '../components/LanguageSelector';
 import UserSignupPage from '../pages/UserSignupPage';
 import LoginPage from '../pages/LoginPage';
