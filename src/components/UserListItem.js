@@ -17,7 +17,7 @@ export default function UserListItem(props) {
                 width="32"
                 height="32"
                 alt={`${username} profile`} src={imageSource} />
-            <span className='px-2'>
+            <span className='ps-2'>
                 {displayName}@{username}
             </span>
         </Link>
