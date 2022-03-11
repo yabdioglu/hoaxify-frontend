@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function UserPage() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [notFound, setNotFound] = useState(false);
 
   const { username } = useParams();
@@ -43,7 +43,7 @@ export default function UserPage() {
 
   return (
     <div className="container">
-      <ProfileCard />
+      <ProfileCard user={user}/>
     </div>
   )
 }
