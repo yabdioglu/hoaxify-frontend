@@ -3,6 +3,7 @@ import { getUsers } from '../api/apiCalls'
 import UserListItem from './UserListItem';
 import { useTranslation } from 'react-i18next';
 import { useApiProgress } from '../shared/ApiProgress'
+import Spinner from './Spinner';
 
 const UserList = () => {
 
@@ -52,11 +53,7 @@ const UserList = () => {
 
     if (pendingApiCall) {
         actionDiv = (
-            <div className="d-flex justify-content-center">
-                <div className="spinner-border text-black-50">
-                    <span className="sr-only"></span>
-                </div>
-            </div>
+            <Spinner/>
         )
     }
 
