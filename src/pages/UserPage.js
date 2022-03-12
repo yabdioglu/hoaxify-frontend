@@ -14,7 +14,7 @@ export default function UserPage() {
 
   const { t } = useTranslation();
 
-  const pendingApiCall = useApiProgress('/api/1.0/users/' + username);
+  const pendingApiCall = useApiProgress('get', '/api/1.0/users/' + username);
 
   useEffect(() => {
     setNotFound(false);
@@ -34,7 +34,7 @@ export default function UserPage() {
 
   if (pendingApiCall) {
     return (
-      <Spinner/>
+      <Spinner />
     )
   }
 

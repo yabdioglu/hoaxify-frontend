@@ -19,7 +19,7 @@ const UserSignupPage = (props) => {
 
     const onChange = event => {
         const { name, value } = event.target;
-        setErrors((previousErrors) => ({ ...previousErrors, [name]:undefined}));
+        setErrors((previousErrors) => ({ ...previousErrors, [name]: undefined }));
         setForm((previousForm) => ({ ...previousForm, [name]: value }));
         //Parametre olarak bir önceki durumu alır. Bizden yeni durumu
         // return etmemizi ister.
@@ -52,13 +52,13 @@ const UserSignupPage = (props) => {
     const { t } = useTranslation();
 
     const { username: usernameError, displayName: displayNameError, password: passwordError } = errors;
-    const pendingApiCallSignup = useApiProgress('/api/1.0/users');
-    const pendingApiCallLogin = useApiProgress('/api/1.0/auth');
+    const pendingApiCallSignup = useApiProgress('post', '/api/1.0/users');
+    const pendingApiCallLogin = useApiProgress('post', '/api/1.0/auth');
 
     const pendingApiCall = pendingApiCallSignup || pendingApiCallLogin;
 
     let passwordRepeatError;
-    if(form.password !== form.passwordRepeat){
+    if (form.password !== form.passwordRepeat) {
         passwordRepeatError = t('Password mismatch');
     }
 
