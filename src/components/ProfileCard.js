@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
@@ -8,13 +8,25 @@ import Input from './Input';
 
 function ProfileCard(props) {
   const [inEditMode, setInEditMode] = useState(false);
+  const [updatedDisplayName, setUpdatedDisplayName] = useState();
   const { username: loggedInUsername } = useSelector((store) => ({ username: store.username }));
   const routeParams = useParams();
 
-  const { t } = useTranslation();
-
   const { user } = props;
   const { username, displayName, image } = user;
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!inEditMode) {
+      setUpdatedDisplayName(undefined);
+    } else {
+      setUpdatedDisplayName(displayName);
+    }
+  }, [inEditMode, displayName]);
+
+  const onClickSave = () => {
+    console.log(updatedDisplayName);
+  };
 
   const pathUsername = routeParams.username;
   let message = "We cannot edit";
@@ -46,9 +58,9 @@ function ProfileCard(props) {
         }
         {inEditMode && (
           <div>
-            <Input label={t('Change Display Name')} />
+            <Input label={t('Change Display Name')} defaultValue={displayName} onChange={(event) => { setUpdatedDisplayName(event.target.value) }} />
             <div>
-              <button className='btn btn-primary d-inline-flex'>
+              <button className='btn btn-primary d-inline-flex' onClick={onClickSave} >
                 <i className='material-icons'>save</i>{t('Save')}</button>
               <button className='btn btn-light d-inline-flex ms-1' onClick={() => setInEditMode(false)}>
                 <i className='material-icons'>close</i>{t('Cancel')}</button>
