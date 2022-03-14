@@ -16,6 +16,7 @@ function ProfileCard(props) {
   const pathUsername = routeParams.username;
   const [user, setUser] = useState({});
   const [editable, setEditable] = useState(false);
+  const [newImage, setNewImage] = useState();
 
   useEffect(() => {
     setUser(props.user);
@@ -31,6 +32,7 @@ function ProfileCard(props) {
   useEffect(() => {
     if (!inEditMode) {
       setUpdatedDisplayName(undefined);
+      setNewImage(undefined);
     } else {
       setUpdatedDisplayName(displayName);
     }
@@ -47,6 +49,15 @@ function ProfileCard(props) {
     } catch (error) { }
   };
 
+  const onChangeFile = (event) => {
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.onloadend = () => {
+      setNewImage(fileReader.result); // okunmuş olan file'ın içeriğini alabilicez.
+    }
+    fileReader.readAsDataURL(file); // bu fonksiyondan sonra fileReader.onloadend fonksiyonu çağırılacak.
+  };
+
   const pendingApiCall = useApiProgress('put', '/api/1.0/users/' + username);
 
   return (
@@ -56,7 +67,10 @@ function ProfileCard(props) {
           className='rounded-circle shadow'
           width="200"
           height="200"
-          alt={`${username} profile`} image={image} />
+          alt={`${username} profile`}
+          image={image}
+          tempImage={newImage}
+        />
       </div>
       <div className='card-body'>
         {!inEditMode &&
@@ -74,6 +88,7 @@ function ProfileCard(props) {
         {inEditMode && (
           <div>
             <Input label={t('Change Display Name')} defaultValue={displayName} onChange={(event) => { setUpdatedDisplayName(event.target.value) }} />
+            <input type="file" onChange={onChangeFile} />
             <div>
               <ButtonWithProgress className='btn btn-primary d-inline-flex'
                 onClick={onClickSave}
