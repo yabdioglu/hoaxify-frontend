@@ -17,6 +17,7 @@ function ProfileCard(props) {
   const [user, setUser] = useState({});
   const [editable, setEditable] = useState(false);
   const [newImage, setNewImage] = useState();
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     setUser(props.user);
@@ -25,6 +26,13 @@ function ProfileCard(props) {
   useEffect(() => {
     setEditable(pathUsername === loggedInUsername)
   }, [pathUsername, loggedInUsername]);
+
+  useEffect(() => {
+    setValidationErrors(previousValidationErrors => ({
+      ...previousValidationErrors,
+      displayName: undefined
+    }));
+  }, [updatedDisplayName])
 
   const { username, displayName, image } = user;
   const { t } = useTranslation();
@@ -40,7 +48,7 @@ function ProfileCard(props) {
 
   const onClickSave = async () => {
     let image;
-    if(newImage){
+    if (newImage) {
       image = newImage.split(',')[1]
     };
 
@@ -52,11 +60,13 @@ function ProfileCard(props) {
       const response = await updateUser(username, body);
       setInEditMode(false);
       setUser(response.data);
-    } catch (error) { }
+    } catch (error) {
+      setValidationErrors(error.response.data.validationErrors);
+    }
   };
 
   const onChangeFile = (event) => {
-    if(event.target.files.length < 1){
+    if (event.target.files.length < 1) {
       return;
     }
     const file = event.target.files[0];
@@ -68,6 +78,8 @@ function ProfileCard(props) {
   };
 
   const pendingApiCall = useApiProgress('put', '/api/1.0/users/' + username);
+
+  const { displayName: displayNameError } = validationErrors;
 
   return (
     <div className='card text-center'>
@@ -96,7 +108,9 @@ function ProfileCard(props) {
         }
         {inEditMode && (
           <div>
-            <Input label={t('Change Display Name')} defaultValue={displayName} onChange={(event) => { setUpdatedDisplayName(event.target.value) }} />
+            <Input label={t('Change Display Name')} defaultValue={displayName}
+              onChange={(event) => { setUpdatedDisplayName(event.target.value) }}
+              error={displayNameError} />
             <input type="file" onChange={onChangeFile} />
             <div>
               <ButtonWithProgress className='btn btn-primary d-inline-flex'
