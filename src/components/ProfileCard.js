@@ -32,7 +32,14 @@ function ProfileCard(props) {
       ...previousValidationErrors,
       displayName: undefined
     }));
-  }, [updatedDisplayName])
+  }, [updatedDisplayName]);
+
+  useEffect(() => {
+    setValidationErrors(previousValidationErrors => ({
+      ...previousValidationErrors,
+      image: undefined
+    }));
+  }, [newImage]);
 
   const { username, displayName, image } = user;
   const { t } = useTranslation();
@@ -79,7 +86,7 @@ function ProfileCard(props) {
 
   const pendingApiCall = useApiProgress('put', '/api/1.0/users/' + username);
 
-  const { displayName: displayNameError } = validationErrors;
+  const { displayName: displayNameError, image: imageError } = validationErrors;
 
   return (
     <div className='card text-center'>
@@ -111,7 +118,7 @@ function ProfileCard(props) {
             <Input label={t('Change Display Name')} defaultValue={displayName}
               onChange={(event) => { setUpdatedDisplayName(event.target.value) }}
               error={displayNameError} />
-            <input type="file" onChange={onChangeFile} />
+            <Input type="file" onChange={onChangeFile} error={imageError} />
             <div>
               <ButtonWithProgress className='btn btn-primary d-inline-flex'
                 onClick={onClickSave}
