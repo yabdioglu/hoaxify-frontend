@@ -22,7 +22,8 @@ export default function HoaxSubmit() {
         }
 
         try {
-            await postHoax(body)
+            await postHoax(body);
+            setFocused(false);
         } catch (error) { }
     }
 
