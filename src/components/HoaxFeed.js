@@ -4,7 +4,7 @@ import { getHoaxes } from '../api/apiCalls';
 import HoaxView from './HoaxView';
 
 export default function HoaxFeed() {
-    const [hoaxPage, setHoaxPage] = useState({ content: [] });
+    const [hoaxPage, setHoaxPage] = useState({ content: [], last: true });
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export default function HoaxFeed() {
         loadHoaxes();
     }, []);
 
-    const { content } = hoaxPage;
+    const { content, last } = hoaxPage;
 
     if (content.length === 0) {
         return <div className='alert alert-secondary text-center'>{t('There are no hoaxes')}</div>
@@ -29,6 +29,7 @@ export default function HoaxFeed() {
             {content.map(hoax => {
                 return <HoaxView key={hoax.id} hoax={hoax} />
             })}
+            {!last && <div className='alert alert-secondary text-center'>{t('Load old hoaxes')}</div>}
         </div>
     );
 };
