@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getHoaxes } from '../api/apiCalls';
+import HoaxView from './HoaxView';
 
 export default function HoaxFeed() {
     const [hoaxPage, setHoaxPage] = useState({ content: [] });
@@ -16,11 +17,18 @@ export default function HoaxFeed() {
         loadHoaxes();
     }, []);
 
-    if (hoaxPage.content.length === 0) {
+    const { content } = hoaxPage;
+
+    if (content.length === 0) {
         return <div className='alert alert-secondary text-center'>{t('There are no hoaxes')}</div>
     }
 
+
     return (
-        <div></div>
+        <div>
+            {content.map(hoax => {
+                return <HoaxView key={hoax.id} hoax={hoax} />
+            })}
+        </div>
     );
 };
