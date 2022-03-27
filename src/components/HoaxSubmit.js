@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
-import { postHoax } from '../api/apiCalls';
+import { postHoax, postHoaxAttachment } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
 import Input from '../components/Input';
@@ -52,8 +52,15 @@ export default function HoaxSubmit() {
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             setNewImage(fileReader.result);
+            uploadFile(file);
         }
         fileReader.readAsDataURL(file);
+    }
+
+    const uploadFile = async (file) => {
+        const attachment = new FormData();
+        attachment.append('file', file);
+        await postHoaxAttachment(attachment);
     }
 
     let textAreaClass = 'form-control';
