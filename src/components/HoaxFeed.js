@@ -35,7 +35,7 @@ export default function HoaxFeed() {
             const response = await getNewHoaxCount(firstHoaxId, username);
             setNewHoaxCount(response.data.count);
         }
-        let looper = setInterval(getCount, 1000); // 1 saniyede bir getCount()'u çağıracak.
+        let looper = setInterval(getCount, 5000); // 1 saniyede bir getCount()'u çağıracak.
         return function cleanup() {
             clearInterval(looper);
         }

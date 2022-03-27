@@ -58,5 +58,5 @@ export const getNewHoaxes = (id, username) => {
 };
 
 export const postHoaxAttachment = attachment => {
-    return axios.post(`api/1.0/hoax-attachments`, attachment);
+    return axios.post(`/api/1.0/hoax-attachments`, attachment);
 };
