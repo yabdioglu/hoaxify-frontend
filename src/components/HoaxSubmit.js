@@ -22,6 +22,7 @@ export default function HoaxSubmit() {
             setHoax('');
             setErrors({});
             setNewImage();
+            setAttachmentId();
         }
     }, [focused]);
 
