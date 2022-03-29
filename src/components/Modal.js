@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next';
 import ButtonWithProgress from './ButtonWithProgress';
 
-export default function Modal({ visible, onClickCancel, message, onClickOk, pendingApiCall }) {
+export default function Modal({ visible, onClickCancel, message, onClickOk, pendingApiCall, title, okButton }) {
     const { t } = useTranslation();
 
     let className = "modal fade";
@@ -15,7 +15,7 @@ export default function Modal({ visible, onClickCancel, message, onClickOk, pend
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">{t('Delete Hoax')}</h5>
+                        <h5 className="modal-title">{title}</h5>
                     </div>
                     <div className="modal-body">
                         {message}
@@ -27,7 +27,7 @@ export default function Modal({ visible, onClickCancel, message, onClickOk, pend
                             onClick={onClickOk}
                             pendingApiCall={pendingApiCall}
                             disabled={pendingApiCall}
-                            text={t('Delete Hoax')}
+                            text={okButton}
                         />
                     </div>
                 </div>

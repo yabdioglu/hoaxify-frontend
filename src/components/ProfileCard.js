@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 import { useTranslation } from 'react-i18next';
 import Input from './Input';
-import { updateUser } from '../api/apiCalls';
+import { deleteUser, updateUser } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from '../components/ButtonWithProgress'
 import { updateSuccess } from '../redux/authActions';
+import Modal from './Modal';
 
 function ProfileCard(props) {
   const [inEditMode, setInEditMode] = useState(false);
@@ -19,6 +20,7 @@ function ProfileCard(props) {
   const [editable, setEditable] = useState(false);
   const [newImage, setNewImage] = useState();
   const [validationErrors, setValidationErrors] = useState({});
+  const [modelVisible, setModelVisible] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,6 +46,9 @@ function ProfileCard(props) {
   }, [newImage]);
 
   const { username, displayName, image } = user;
+
+  const pendingApiCallDeleteUser = useApiProgress('delete', `/api/1.0/users/${username}`, true);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -69,7 +74,7 @@ function ProfileCard(props) {
       const response = await updateUser(username, body);
       setInEditMode(false);
       setUser(response.data);
-      dispatch(updateSuccess(response.data)); 
+      dispatch(updateSuccess(response.data));
     } catch (error) {
       setValidationErrors(error.response.data.validationErrors);
     }
@@ -86,6 +91,15 @@ function ProfileCard(props) {
     }
     fileReader.readAsDataURL(file); // bu fonksiyondan sonra fileReader.onloadend fonksiyonu çağırılacak.
   };
+
+  const onClickCancel = () => {
+    setModelVisible(false);
+  };
+
+  const onClickDeleteUser = async () => {
+    await deleteUser(username);
+    setModelVisible(false);
+  }
 
   const pendingApiCall = useApiProgress('put', '/api/1.0/users/' + username);
 
@@ -110,9 +124,18 @@ function ProfileCard(props) {
               <h3>
                 {displayName}@{username}
               </h3>
-              {editable && <button className='btn btn-success d-inline-flex' onClick={() => setInEditMode(true)}>
-                <i className='material-icons'>edit</i>{t('Edit')}
-              </button>}
+              {editable && (
+                <>
+                  <button className='btn btn-success d-inline-flex' onClick={() => setInEditMode(true)}>
+                    <i className='material-icons'>edit</i>{t('Edit')}
+                  </button>
+                  <div className='pt-2'>
+                    <button className='btn btn-danger d-inline-flex' onClick={() => setModelVisible(true)}>
+                      <i className='material-icons'>directions_run</i>{t('Delete My Account')}
+                    </button>
+                  </div>
+                </>
+              )}
             </>
           )
         }
@@ -144,6 +167,14 @@ function ProfileCard(props) {
           </div>
         )}
       </div>
+      <Modal visible={modelVisible}
+        title={t('Delete My Account')}
+        okButton={t('Delete My Account')}
+        onClickCancel={onClickCancel}
+        onClickOk={onClickDeleteUser}
+        pendingApiCall={pendingApiCallDeleteUser}
+        message={t('Are you sure to delete your account ? ')}
+      />
     </div >
   )
 };

@@ -64,6 +64,7 @@ export default function HoaxView(props) {
                 )}
             </div>
             <Modal visible={modelVisible}
+                title={t('Delete Hoax')}
                 onClickCancel={onClickCancel}
                 onClickOk={onClickDelete}
                 pendingApiCall={pendingApiCall}
@@ -75,6 +76,7 @@ export default function HoaxView(props) {
                         <span>{content}</span>
                     </div>
                 }
+                okButton={t('Delete Hoax')}
             />
         </>
     );
