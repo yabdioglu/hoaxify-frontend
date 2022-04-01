@@ -7,8 +7,9 @@ import Input from './Input';
 import { deleteUser, updateUser } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from '../components/ButtonWithProgress'
-import { updateSuccess } from '../redux/authActions';
+import { logoutSuccess, updateSuccess } from '../redux/authActions';
 import Modal from './Modal';
+import { useHistory } from 'react-router-dom';
 
 function ProfileCard(props) {
   const [inEditMode, setInEditMode] = useState(false);
@@ -22,6 +23,7 @@ function ProfileCard(props) {
   const [validationErrors, setValidationErrors] = useState({});
   const [modelVisible, setModelVisible] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     setUser(props.user);
@@ -99,6 +101,8 @@ function ProfileCard(props) {
   const onClickDeleteUser = async () => {
     await deleteUser(username);
     setModelVisible(false);
+    dispatch(logoutSuccess());
+    history.push('/');
   }
 
   const pendingApiCall = useApiProgress('put', '/api/1.0/users/' + username);
